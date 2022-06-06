@@ -1,4 +1,4 @@
-import {NavigationProp, NavigatorScreenParams} from "@react-navigation/native";
+import {NavigationProp, NavigatorScreenParams, useNavigation} from "@react-navigation/native";
 
 export type RootTabParamList = {
   Profile: undefined
@@ -15,3 +15,5 @@ export type RootStackParamList = {
 }
 
 export type UseNavigationType = NavigationProp<RootTabParamList>
+
+export const useAppNavigation = () => useNavigation<UseNavigationType>()
