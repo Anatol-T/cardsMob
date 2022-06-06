@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StatusBar} from "expo-status-bar";
 import {FontAwesome} from "@expo/vector-icons";
 import {PacksList} from "./PacksList";
@@ -8,11 +8,30 @@ import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {RootStackParamList, RootTabParamList} from "../navigation/navigationsTypes";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../bll/store";
+import {initializeAppTC} from "../bll/appReducer";
+import {ActivityIndicator} from "react-native";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export const Main = () => {
+  const dispatch = useDispatch<any>();
+
+  const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
+
+  useEffect(() => {
+    dispatch(initializeAppTC())
+  }, [dispatch])
+
+  useEffect(()=>{
+    console.log(isInitialized)
+  })
+
+  if (!isInitialized) {
+    return <ActivityIndicator/>
+  }
   return (
     <NavigationContainer>
       <StatusBar style="auto"/>

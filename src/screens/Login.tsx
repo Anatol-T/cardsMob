@@ -1,11 +1,12 @@
 import React from 'react';
 import {Text, View} from "react-native";
+import {Frame} from "../components/Frame";
 
 export const Login = () => {
   return (
-    <View>
+    <Frame>
       <Text>Login page</Text>
-    </View>
+    </Frame>
   );
 };
 
