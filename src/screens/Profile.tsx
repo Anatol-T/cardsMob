@@ -20,7 +20,8 @@ export const Profile = () => {
   return (
     <Frame>
       <Text>Your profile</Text>
-      <Image source={noAvatar} style={styles.avatar}/>
+      <Image source={profileAvatar ? {uri: profileAvatar} :noAvatar} style={styles.avatar}/>
+      <Text>{profileName}</Text>
       <Text>Email: {profileEmail}</Text>
       <Text>Your packs: {packsNumber} </Text>
     </Frame>

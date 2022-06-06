@@ -18,6 +18,7 @@ const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export const Main = () => {
   const dispatch = useDispatch<any>();
+  const loginStatus = useSelector<AppRootStateType, boolean>(state => state.login.status);
 
   const isInitialized = useSelector<AppRootStateType, boolean>(state => state.app.isInitialized)
 
@@ -29,13 +30,15 @@ export const Main = () => {
     console.log(isInitialized)
   })
 
+  const display = loginStatus ? "flex" : "none"
+
   if (!isInitialized) {
     return <ActivityIndicator/>
   }
   return (
     <NavigationContainer>
       <StatusBar style="auto"/>
-      <Tab.Navigator initialRouteName={'Profile'} screenOptions={({route}) => {
+      <Tab.Navigator initialRouteName={'Login'}  screenOptions={({route}) => {
         let iconName: string
         if (route.name === 'Profile') iconName = 'user'
         if (route.name === 'Packs') iconName = 'th-list'
@@ -46,9 +49,9 @@ export const Main = () => {
           tabBarIcon: ({focused}) => <FontAwesome name={iconName as any} size={24} color={focused ? 'red' : 'black'}/>
         }
       }}>
-        <Tab.Screen name="Packs" component={PacksList}/>
+        <Tab.Screen name="Packs"  component={PacksList}/>
         <Tab.Screen name="Profile" component={Profile}/>
-        <Tab.Screen name="Login" component={Login}/>
+        <Tab.Screen name="Login" component={Login} options={{tabBarStyle: {display: display}}}/>
       </Tab.Navigator>
     </NavigationContainer>
   );

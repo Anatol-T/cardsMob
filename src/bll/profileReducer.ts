@@ -54,6 +54,7 @@ export const updateProfile = (data: updateProfileRequestType) => (dispatch: Disp
         })
         .catch(error => {
             if (axios.isAxiosError(error) && error.response) {
+                // @ts-ignore
                 dispatch(setProfileError(error.response.data.error));
             }
         })
