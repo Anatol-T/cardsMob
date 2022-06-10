@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Dimensions, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Frame} from "../../components/Frame";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../bll/store";
 import {addPackTC, changeCurrentPageAC, fetchPacksListsTC, setPageCountAC} from "../../bll/cardsPackReducer";
 import {setErrorAC} from "../../bll/appReducer";
 import {PackTable} from "./PackTable";
+import {Pagination} from "../../components/Pagination";
+
+const {height} = Dimensions.get('screen')
 
 export const PacksList = () => {
   const dispatch = useDispatch<any>();
@@ -66,9 +69,14 @@ export const PacksList = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.mainBlock}>
-          <PackTable/>
+          {isLoading? <Text>loading...</Text>:<PackTable/>}
         </View>
-        <View style={styles.paginationBlock}><Text>Pagination</Text></View>
+        <View style={styles.paginationBlock}>
+          <Pagination totalCount={cardPacksTotalCount}
+                      pageSize={pageCount}
+                      currentPage={page}
+                      onChangedPage={onChangedPage}/>
+        </View>
       </View>
     </Frame>
   );
@@ -76,19 +84,21 @@ export const PacksList = () => {
 
 const styles = StyleSheet.create({
   page: {
-    height: '95%',
-    justifyContent: "space-between"
+    height: height * 0.75,
+    justifyContent: "space-around",
+    width: '100%'
   },
   title: {
-    flex: 1,
+    flex: 2,
     textAlign: 'center',
     fontSize: 18,
     color: '#e589c2',
     fontWeight: "900",
-    letterSpacing: 2
+    letterSpacing: 2,
+    marginBottom: 5,
   },
   filterBlock: {
-    flex: 1,
+    flex: 2,
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -100,10 +110,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   mainBlock: {
-    flex: 17,
+    flex: 32,
   },
   paginationBlock: {
-    flex: 1,
-    backgroundColor: 'red'
+    flex: 2,
+    marginTop: 5,
+
   },
 });
