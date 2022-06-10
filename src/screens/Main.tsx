@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {StatusBar} from "expo-status-bar";
 import {FontAwesome} from "@expo/vector-icons";
-import {PacksList} from "./PacksList";
+import {PacksList} from "./packList/PacksList";
 import {Profile} from "./Profile";
 import {Login} from "./Login";
 import {NavigationContainer} from "@react-navigation/native";

@@ -10,7 +10,7 @@ const initialState = {
     minCardsCount: 0,
     maxCardsCount: 0,
     page: 1,
-    pageCount: 8,
+    pageCount: 10,
     myPacks: false,
     sortPacks: "0updated",
     min: 0,
