@@ -23,16 +23,14 @@ const initialState = {
 export const cardsPackReducer = (state: InitialStateType = initialState, action: CardsPackActionsType): InitialStateType => {
     switch (action.type) {
         case 'PACKS/SET_PACKS_LIST':
-            return {...state, ...action.data}
+            return {...state, ...action.data, max: action.data.maxCardsCount}
         case 'PACKS/SORT':
             return {...state, sortPacks: action.sortPacks, page: 1}
-        case 'PACKS/SET_MY_PACKS':
+        case 'PACKS/FILTER':
             return {
                 ...state,
-                myPacks: action.myPacks,
-                min: 0,
-                max: 0,
-                packName: ''
+                ...action.payload,
+                page: 1
             }
         case "PACKS/CHANGE_CURRENT_PAGE":
             return {...state, page: action.page}
@@ -81,10 +79,10 @@ export const sortPacksAC = (sortPacks: string) =>
 
 type SortPacksACType = ReturnType<typeof sortPacksAC>
 
-export const setMyPacksAC = (myPacks: boolean) =>
-    ({type: 'PACKS/SET_MY_PACKS', myPacks} as const)
+export const setFilterAC = (myPacks: boolean, packName: string, min: number, max: number) =>
+    ({type: 'PACKS/FILTER', payload: {myPacks, packName, min, max}} as const)
 
-type SetMyPacksACType = ReturnType<typeof setMyPacksAC>
+type SetMyPacksACType = ReturnType<typeof setFilterAC>
 
 export const changeCurrentPageAC = (page: number) =>
     ({type: 'PACKS/CHANGE_CURRENT_PAGE', page} as const)

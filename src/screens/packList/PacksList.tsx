@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Dimensions, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Frame} from "../../components/Frame";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../bll/store";
@@ -7,6 +7,8 @@ import {addPackTC, changeCurrentPageAC, fetchPacksListsTC, setPageCountAC} from 
 import {setErrorAC} from "../../bll/appReducer";
 import {PackTable} from "./PackTable";
 import {Pagination} from "../../components/Pagination";
+import {FilterModal} from "./FilterModal";
+
 
 const {height} = Dimensions.get('screen')
 
@@ -15,8 +17,8 @@ export const PacksList = () => {
   const error = useSelector<AppRootStateType, string>(state => state.app.error);
   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.status);
   const isLoading = useSelector<AppRootStateType, boolean>(state => state.app.isLoading)
-  const debouncingFlag = useSelector<AppRootStateType, object>(state => state.cardsPack.debouncingFlag)
-  //const max = useSelector<AppRootStateType, number>(state => state.cardsPack.max)
+  const max = useSelector<AppRootStateType, number>(state => state.cardsPack.max)
+  const min = useSelector<AppRootStateType, number>(state => state.cardsPack.min)
   const page = useSelector<AppRootStateType, number>(state => state.cardsPack.page)
   const pageCount = useSelector<AppRootStateType, number>(state => state.cardsPack.pageCount)
   const myPacks = useSelector<AppRootStateType, boolean>(state => state.cardsPack.myPacks)
@@ -26,11 +28,14 @@ export const PacksList = () => {
 
   const [newPackName, setNewPackName] = useState<string>('');
   const [privateValue, setPrivateValue] = useState<boolean>(false);
+
+  const [filterModalVisible, setFilterModalVisible]= useState(false)
+
   useEffect(() => {
     if (!isLoading) {
       dispatch(fetchPacksListsTC())
     }
-  }, [page, pageCount, myPacks, sortPacks, packName, debouncingFlag])
+  }, [page, pageCount, myPacks, sortPacks, packName, max, min])
 
   useEffect(() => {
     return () => {
@@ -61,7 +66,7 @@ export const PacksList = () => {
       <View style={styles.page}>
         <Text style={styles.title}>Packs lists</Text>
         <View style={styles.filterBlock}>
-          <TouchableOpacity style={styles.filterSection}>
+          <TouchableOpacity style={styles.filterSection} onPress={()=> setFilterModalVisible(true)}>
             <Text>Filter</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.filterSection}>
@@ -69,7 +74,9 @@ export const PacksList = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.mainBlock}>
-          {isLoading? <Text>loading...</Text>:<PackTable/>}
+          {isLoading ?
+            <ActivityIndicator size="large" color="#9890C7" style={styles.spinner}/>
+            : <PackTable/>}
         </View>
         <View style={styles.paginationBlock}>
           <Pagination totalCount={cardPacksTotalCount}
@@ -78,6 +85,7 @@ export const PacksList = () => {
                       onChangedPage={onChangedPage}/>
         </View>
       </View>
+      <FilterModal modalVisible={filterModalVisible} setModalVisible={setFilterModalVisible}/>
     </Frame>
   );
 };
@@ -115,6 +123,8 @@ const styles = StyleSheet.create({
   paginationBlock: {
     flex: 2,
     marginTop: 5,
-
   },
+  spinner: {
+    marginTop: 25
+  }
 });
