@@ -2,18 +2,16 @@ import {NavigationProp, NavigatorScreenParams, useNavigation} from "@react-navig
 
 export type RootTabParamList = {
   Profile: undefined
-  Packs: undefined
+  Packs: NavigatorScreenParams<RootStackParamList>
   Login: undefined
 };
 
 export type RootStackParamList = {
-  Stack1: undefined
-  Stack2: undefined
-  Stack3: {
-    id: number
-  }
+  PacksMain: undefined
+  Learn: {packId: string}
+  Cards: {packId: string}
 }
 
-export type UseNavigationType = NavigationProp<RootTabParamList>
+export type UseNavigationType = NavigationProp<RootTabParamList & RootStackParamList>
 
 export const useAppNavigation = () => useNavigation<UseNavigationType>()

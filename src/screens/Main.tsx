@@ -12,9 +12,22 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../bll/store";
 import {initializeAppTC} from "../bll/appReducer";
 import {ActivityIndicator} from "react-native";
+import {Learn} from "./Learn";
+import {Cards} from "./Cards";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
+
+const RootStackNavigation = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name={'PacksMain'} component={PacksList} options={{headerShown: false}}/>
+      <Stack.Screen name={"Cards"} component={Cards}/>
+      <Stack.Screen name={"Learn"} component={Learn}/>
+    </Stack.Navigator>
+  )
+}
+
 
 export const Main = () => {
   const dispatch = useDispatch<any>();
@@ -49,7 +62,7 @@ export const Main = () => {
           tabBarIcon: ({focused}) => <FontAwesome name={iconName as any} size={24} color={focused ? 'red' : 'black'}/>
         }
       }}>
-        <Tab.Screen name="Packs"  component={PacksList}/>
+        <Tab.Screen name="Packs"  component={RootStackNavigation}/>
         <Tab.Screen name="Profile" component={Profile}/>
         <Tab.Screen name="Login" component={Login} options={{tabBarStyle: {display: display}}}/>
       </Tab.Navigator>

@@ -11,6 +11,13 @@ export const PackTable = () => {
   const packs = useSelector<AppRootStateType, Array<PackType>>(state => state.cardsPack.cardPacks)
   const sortPacks = useSelector<AppRootStateType, string>(state => state.cardsPack.sortPacks)
   const isLoading = useSelector<AppRootStateType, boolean>(state => state.app.isLoading)
+
+  const ToLearn = (packId: string) => {
+    navigation.navigate('Learn', {packId})
+  }
+  const ToInfo = (packId: string) => {
+    navigation.navigate('Cards', {packId})
+  }
   return (
     <FlatList
       data={packs}
@@ -36,7 +43,12 @@ export const PackTable = () => {
               <Text>{item.user_name}</Text>
             </View>
             <View style={styles.buttonBlock}>
-              <TouchableOpacity style={styles.button}><Text>Learn</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={()=>ToLearn(item._id)}>
+                <Text>Learn</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={()=>ToInfo(item._id)}>
+                <Text>Info</Text>
+              </TouchableOpacity>
             </View>
           </View>
         )
@@ -61,7 +73,9 @@ const styles = StyleSheet.create({
     width: 95
   },
   buttonBlock: {
-    marginVertical: 5
+    marginVertical: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   button: {
     width: '25%',
