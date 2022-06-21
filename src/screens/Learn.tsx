@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Frame} from "../components/Frame";
-import {ActivityIndicator, Pressable, Text, View} from "react-native";
+import {ActivityIndicator, Pressable, StyleSheet, Text, View} from "react-native";
 import {LearnProps} from "../navigation/navigationsTypes";
 import {CardType} from "../dal/cardsApi";
 import {useDispatch, useSelector} from "react-redux";
@@ -82,13 +82,11 @@ export const Learn = ({route}: LearnProps) => {
                 <View >
                   <Text>Answer: {card.answer}</Text>
                   <Text>Rate yourself: </Text>
-                  <Radio/>
-                  {/*<SuperRadio*/}
-                  {/*  name={'radio'}*/}
-                  {/*  options={grades}*/}
-                  {/*  value={rating}*/}
-                  {/*  onChangeOption={setRating}*/}
-                  {/*/>*/}
+                  <Radio
+                    options={grades}
+                    value={rating}
+                    onChangeOption={setRating}
+                  />
                 </View>
 
 
@@ -114,3 +112,7 @@ export const Learn = ({route}: LearnProps) => {
     </Frame>
   );
 };
+
+const styles = StyleSheet.create({
+
+});
