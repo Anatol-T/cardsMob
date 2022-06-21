@@ -1,4 +1,5 @@
 import {NavigationProp, NavigatorScreenParams, useNavigation} from "@react-navigation/native";
+import {NativeStackScreenProps} from "react-native-screens/native-stack";
 
 export type RootTabParamList = {
   Profile: undefined
@@ -11,6 +12,8 @@ export type RootStackParamList = {
   Learn: {packId: string}
   Cards: {packId: string}
 }
+
+export type LearnProps = NativeStackScreenProps<RootStackParamList, 'Learn'>
 
 export type UseNavigationType = NavigationProp<RootTabParamList & RootStackParamList>
 
