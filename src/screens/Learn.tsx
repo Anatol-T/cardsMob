@@ -71,39 +71,41 @@ export const Learn = ({route}: LearnProps) => {
       {loading
       ? <ActivityIndicator size={"large"}/>
       : <View>
-          <Text>Learn "{packName}"</Text>
+          <Text style={styles.title}>Learn "{packName}"</Text>
           <View>
-            <View >
-              <Text>Question: {card.question}</Text>
+            <View style={styles.textBlock}>
+              <Text><Text style={styles.boldText}>Question: </Text>{card.question}</Text>
             </View>
 
             {isChecked && (
               <>
                 <View >
-                  <Text>Answer: {card.answer}</Text>
-                  <Text>Rate yourself: </Text>
-                  <Radio
+                  <Text style={styles.textBlock}><Text style={styles.boldText}>Answer: </Text>{card.answer}</Text>
+                  <Text style={styles.boldText}>Rate yourself: </Text>
+                  <View style={styles.radioBlock}>
+                    <Radio
                     options={grades}
                     value={rating}
                     onChangeOption={setRating}
                   />
+                  </View>
                 </View>
 
 
               </>
             )}
           </View>
-          <View >
-            <Pressable onPress={cancelHandler}>
-              <Text>Cancel</Text>
-            </Pressable>
+          <View style={styles.buttonBlock}>
+            {/*<Pressable onPress={cancelHandler}>*/}
+            {/*  <Text>Cancel</Text>*/}
+            {/*</Pressable>*/}
             {
               isChecked
-                ? <Pressable onPress={onNext} disabled={!rating}>
+                ? <Pressable onPress={onNext} disabled={!rating} style={styles.button}>
                   <Text>Next</Text>
                   </Pressable>
                 :
-                <Pressable onPress={() => setIsChecked(true)}>
+                <Pressable onPress={() => setIsChecked(true)} style={styles.button}>
                   <Text>Show answer</Text>
                 </Pressable>
             }
@@ -114,5 +116,32 @@ export const Learn = ({route}: LearnProps) => {
 };
 
 const styles = StyleSheet.create({
-
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginVertical: 5
+  },
+  buttonBlock: {
+    marginVertical: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  button: {
+    width: 110,
+    height: 27,
+    backgroundColor: '#9890C7',
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+  },
+  textBlock: {
+    marginVertical: 5
+  },
+  boldText: {
+    fontWeight: "bold"
+  },
+  radioBlock: {
+    marginLeft: 8,
+    marginVertical: 5,
+  },
 });
