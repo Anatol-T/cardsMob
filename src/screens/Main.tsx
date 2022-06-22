@@ -13,7 +13,7 @@ import {AppRootStateType} from "../bll/store";
 import {initializeAppTC} from "../bll/appReducer";
 import {ActivityIndicator} from "react-native";
 import {Learn} from "./Learn";
-import {Cards} from "./Cards";
+import {Cards} from "./cards/Cards";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
