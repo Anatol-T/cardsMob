@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Button, Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {Frame} from "../components/Frame";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../bll/store";
 import {loginTC, logoutTC} from "../bll/loginReducer";
 import {setErrorAC} from "../bll/appReducer";
 import Checkbox from 'expo-checkbox';
+
+const {width} = Dimensions.get('screen')
 
 export const Login = () => {
   const [email, setEmail] = useState<string>('');
@@ -85,12 +87,12 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: 'flex-start',
     flexDirection: 'row',
-    width: '80%',
+    width: '90%',
     justifyContent: 'space-between',
     marginVertical: 10
   },
   input: {
-    width: 180,
+    width: width * 0.45,
     height: 30,
     backgroundColor: '#fff',
     borderRadius: 8,

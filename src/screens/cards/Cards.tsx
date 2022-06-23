@@ -1,22 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import {Frame} from "../../components/Frame";
 import {ActivityIndicator, Dimensions, Pressable, StyleSheet, Text, View} from "react-native";
-import {CardsProps} from "../../navigation/navigationsTypes";
+import {CardsProps, useAppNavigation} from "../../navigation/navigationsTypes";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../bll/store";
 import {CardType} from "../../dal/cardsApi";
-import {addCardTC, changeCurrentPageCardsAC, fetchCardsTC, setPageCountCardsAC} from "../../bll/cardsReducer";
+import {addCardTC, changeCurrentPageCardsAC, fetchCardsTC} from "../../bll/cardsReducer";
 import {Pagination} from "../../components/Pagination";
-import {PackTable} from "../packList/PackTable";
 import {CardsTable} from "./CardsTable";
 
 const {height} = Dimensions.get('screen')
 
 export const Cards = ({route}: CardsProps) => {
+  const packId = route.params.packId
+  const navigation = useAppNavigation()
+
   const myId = useSelector<AppRootStateType, string>(state => state.profilePage._id);
   const userId = useSelector<AppRootStateType, string>(state => state.cards.packUserId);
   const isLoading = useSelector<AppRootStateType, boolean>(state => state.app.isLoading)
-  const packName = useSelector<AppRootStateType, string>(state => state.cardsPack.packName);
+  const packName = useSelector<AppRootStateType, string>(state => state.cardsPack.cardPacks.filter((p: any) => p._id === packId)[0]?.name)
   const cards = useSelector<AppRootStateType, Array<CardType>>(state => state.cards.cards);
   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.status);
   const pageCount = useSelector<AppRootStateType, number>(state => state.cards.pageCount)
@@ -25,7 +27,6 @@ export const Cards = ({route}: CardsProps) => {
   const cardAnswer = useSelector<AppRootStateType, string>(state => state.cards.cardAnswer)
   const sortCards = useSelector<AppRootStateType, string>(state => state.cards.sortCards)
   const cardsTotalCount = useSelector<AppRootStateType, number>(state => state.cards.cardsTotalCount)
-  const packId = route.params.packId
   const dispatch = useDispatch<any>()
 
   const currId = packId ? packId : ''
@@ -43,7 +44,7 @@ export const Cards = ({route}: CardsProps) => {
   }, [page, cardQuestion, cardAnswer, sortCards])
 
   if (!isLoggedIn) {
-    //return <Navigate to={PATH.LOGIN}/>
+    return <></>
   }
 
   const onChangedPage = (newPage: number) => {
@@ -56,25 +57,25 @@ export const Cards = ({route}: CardsProps) => {
     setNewCardAnswer('')
     closeModal()
   }
-
+  console.log(packName)
   return (
     <Frame>
       <View style={styles.page}>
-        <Text style={styles.title}>{packName}</Text>
+        <Text style={styles.title}>Pack name: {packName}</Text>
 
         <View style={styles.filterBlock}>
+          <Pressable  style={styles.filterSection}><Text>Sort by</Text></Pressable>
           {
             myId === userId
-              ? <Pressable onPress={showModal}><Text>Add new card</Text></Pressable>
+              ? <Pressable onPress={showModal} style={styles.filterSection}><Text>Add new card</Text></Pressable>
               : <></>
           }
         </View>
         <View style={styles.mainBlock}>
           {isLoading ?
             <ActivityIndicator size="large" color="#9890C7" style={styles.spinner}/>
-            : <CardsTable/>}
+            : <CardsTable cards={cards}/>}
         </View>
-        {/*<CardsTable cards={cards}/>*/}
         <View style={styles.paginationBlock}>
           <Pagination totalCount={cardsTotalCount}
                       pageSize={pageCount}
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     color: '#e589c2',
     fontWeight: "900",
     letterSpacing: 2,
-    marginBottom: 5,
+    marginVertical: 5,
   },
   filterBlock: {
     flex: 2,

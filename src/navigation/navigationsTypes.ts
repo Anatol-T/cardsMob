@@ -16,6 +16,6 @@ export type RootStackParamList = {
 export type LearnProps = NativeStackScreenProps<RootStackParamList, 'Learn'>
 export type CardsProps = NativeStackScreenProps<RootStackParamList, 'Cards'>
 
-export type UseNavigationType = NavigationProp<RootTabParamList & RootStackParamList>
+export type UseNavigationType = NavigationProp<RootTabParamList >
 
 export const useAppNavigation = () => useNavigation<UseNavigationType>()

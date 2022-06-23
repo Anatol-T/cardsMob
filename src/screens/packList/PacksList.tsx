@@ -8,11 +8,13 @@ import {setErrorAC} from "../../bll/appReducer";
 import {PackTable} from "./PackTable";
 import {Pagination} from "../../components/Pagination";
 import {FilterModal} from "./FilterModal";
+import {useAppNavigation} from "../../navigation/navigationsTypes";
 
 
 const {height} = Dimensions.get('screen')
 
 export const PacksList = () => {
+  const navigation = useAppNavigation()
   const dispatch = useDispatch<any>();
   const error = useSelector<AppRootStateType, string>(state => state.app.error);
   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.status);
@@ -59,7 +61,7 @@ export const PacksList = () => {
   }
 
   if (!isLoggedIn) {
-    //return <Navigate to={PATH.LOGIN}/>
+    return <></>
   }
   return (
     <Frame>

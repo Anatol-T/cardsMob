@@ -13,10 +13,10 @@ export const PackTable = () => {
   const isLoading = useSelector<AppRootStateType, boolean>(state => state.app.isLoading)
 
   const ToLearn = (packId: string) => {
-    navigation.navigate('Learn', {packId})
+    navigation.navigate('Packs', {screen: 'Learn', params: {packId}})
   }
   const ToInfo = (packId: string) => {
-    navigation.navigate('Cards', {packId})
+    navigation.navigate('Packs', {screen: 'Cards', params: {packId}})
   }
   return (
     <FlatList
