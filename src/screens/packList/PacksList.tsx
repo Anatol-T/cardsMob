@@ -3,18 +3,17 @@ import {ActivityIndicator, Dimensions, StyleSheet, Text, TouchableOpacity, View}
 import {Frame} from "../../components/Frame";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../bll/store";
-import {addPackTC, changeCurrentPageAC, fetchPacksListsTC, setPageCountAC} from "../../bll/cardsPackReducer";
+import {addPackTC, changeCurrentPageAC, fetchPacksListsTC} from "../../bll/cardsPackReducer";
 import {setErrorAC} from "../../bll/appReducer";
 import {PackTable} from "./PackTable";
 import {Pagination} from "../../components/Pagination";
 import {FilterModal} from "./FilterModal";
-import {useAppNavigation} from "../../navigation/navigationsTypes";
 
 
 const {height} = Dimensions.get('screen')
 
 export const PacksList = () => {
-  const navigation = useAppNavigation()
+
   const dispatch = useDispatch<any>();
   const error = useSelector<AppRootStateType, string>(state => state.app.error);
   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.status);
@@ -45,10 +44,6 @@ export const PacksList = () => {
     }
   })
 
-
-  const pageSizeHandler = (value: number) => {
-    if (!isLoading) dispatch(setPageCountAC(value))
-  }
   const onChangedPage = (newPage: number) => {
     if (isLoading) return
     if (newPage !== page) dispatch(changeCurrentPageAC(newPage))

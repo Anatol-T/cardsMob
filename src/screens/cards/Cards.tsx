@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {Frame} from "../../components/Frame";
 import {ActivityIndicator, Dimensions, Pressable, StyleSheet, Text, View} from "react-native";
-import {CardsProps, useAppNavigation} from "../../navigation/navigationsTypes";
+import {CardsProps} from "../../navigation/navigationsTypes";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../bll/store";
 import {CardType} from "../../dal/cardsApi";
-import {addCardTC, changeCurrentPageCardsAC, fetchCardsTC} from "../../bll/cardsReducer";
+import {changeCurrentPageCardsAC, fetchCardsTC} from "../../bll/cardsReducer";
 import {Pagination} from "../../components/Pagination";
 import {CardsTable} from "./CardsTable";
+import {AddNewCardModal} from "./AddNewCardModal";
 
 const {height} = Dimensions.get('screen')
 
 export const Cards = ({route}: CardsProps) => {
   const packId = route.params.packId
-  const navigation = useAppNavigation()
 
   const myId = useSelector<AppRootStateType, string>(state => state.profilePage._id);
   const userId = useSelector<AppRootStateType, string>(state => state.cards.packUserId);
@@ -29,13 +29,8 @@ export const Cards = ({route}: CardsProps) => {
   const cardsTotalCount = useSelector<AppRootStateType, number>(state => state.cards.cardsTotalCount)
   const dispatch = useDispatch<any>()
 
-  const currId = packId ? packId : ''
-
-  const [newCardQuestion, setNewCardQuestion] = useState<string>('');
-  const [newCardAnswer, setNewCardAnswer] = useState<string>('');
   const [isModalAdd, setIsModalAdd] = useState<boolean>(false)
   const showModal = () => setIsModalAdd(true);
-  const closeModal = () => setIsModalAdd(false);
 
   useEffect(() => {
     if (packId) {
@@ -51,13 +46,6 @@ export const Cards = ({route}: CardsProps) => {
     if (newPage !== page) dispatch(changeCurrentPageCardsAC(newPage))
   }
 
-  const addCard = () => {
-    dispatch(addCardTC(currId, newCardQuestion, newCardAnswer))
-    setNewCardQuestion('')
-    setNewCardAnswer('')
-    closeModal()
-  }
-  console.log(packName)
   return (
     <Frame>
       <View style={styles.page}>
@@ -83,6 +71,7 @@ export const Cards = ({route}: CardsProps) => {
                       onChangedPage={onChangedPage}/>
         </View>
       </View>
+      <AddNewCardModal modalVisible={isModalAdd} setModalVisible={setIsModalAdd} packId={packId}/>
     </Frame>
   );
 };

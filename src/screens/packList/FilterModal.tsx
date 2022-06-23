@@ -70,12 +70,10 @@ export const FilterModal = ({modalVisible, setModalVisible}: PropsType) => {
             </Pressable>
           </View>
           <View style={styles.search}>
-
             <TextInput
               placeholder={'Search...'}
               value={search}
               onChangeText={setSearch}
-
             />
           </View>
           <View>
