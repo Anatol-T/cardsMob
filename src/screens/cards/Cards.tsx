@@ -4,7 +4,6 @@ import {ActivityIndicator, Dimensions, Pressable, StyleSheet, Text, View} from "
 import {CardsProps} from "../../navigation/navigationsTypes";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../bll/store";
-import {CardType} from "../../dal/cardsApi";
 import {changeCurrentPageCardsAC, fetchCardsTC} from "../../bll/cardsReducer";
 import {Pagination} from "../../components/Pagination";
 import {CardsTable} from "./CardsTable";
@@ -19,7 +18,6 @@ export const Cards = ({route}: CardsProps) => {
   const userId = useSelector<AppRootStateType, string>(state => state.cards.packUserId);
   const isLoading = useSelector<AppRootStateType, boolean>(state => state.app.isLoading)
   const packName = useSelector<AppRootStateType, string>(state => state.cardsPack.cardPacks.filter((p: any) => p._id === packId)[0]?.name)
-  const cards = useSelector<AppRootStateType, Array<CardType>>(state => state.cards.cards);
   const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.login.status);
   const pageCount = useSelector<AppRootStateType, number>(state => state.cards.pageCount)
   const page = useSelector<AppRootStateType, number>(state => state.cards.page)
@@ -62,7 +60,7 @@ export const Cards = ({route}: CardsProps) => {
         <View style={styles.mainBlock}>
           {isLoading ?
             <ActivityIndicator size="large" color="#9890C7" style={styles.spinner}/>
-            : <CardsTable cards={cards}/>}
+            : <CardsTable packId={packId}/>}
         </View>
         <View style={styles.paginationBlock}>
           <Pagination totalCount={cardsTotalCount}

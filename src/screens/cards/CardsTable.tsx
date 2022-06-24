@@ -1,18 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {CardType} from "../../dal/cardsApi";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../bll/store";
+import {DeleteCardModal} from "./DeleteCardModal";
 
 export type PropsType = {
-  cards: Array<CardType>
+  packId: string
 }
 
-export const CardsTable = ({cards}: PropsType) => {
+export const CardsTable = ({packId}:PropsType) => {
   const userId = useSelector<AppRootStateType, string>(state => state.profilePage._id);
+  const cards = useSelector<AppRootStateType, Array<CardType>>(state => state.cards.cards);
+
+  const [isShownDeleteModal, setIsShownDeleteModal] = useState<boolean>(false)
+  const [cardId, setCardId] = useState<string>('')
+
+  const deleteHandler = (id: string) => {
+    setCardId(id)
+    setIsShownDeleteModal(true)
+  }
 
   return (
-    <FlatList
+    <>
+      <FlatList
       data={cards}
       showsVerticalScrollIndicator={false}
       keyExtractor={(item) => item._id}
@@ -36,7 +47,7 @@ export const CardsTable = ({cards}: PropsType) => {
                 <TouchableOpacity style={styles.button}>
                   <Text>Edit</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => deleteHandler(item._id)}>
                   <Text>Delete</Text>
                 </TouchableOpacity>
               </View>
@@ -47,6 +58,13 @@ export const CardsTable = ({cards}: PropsType) => {
         )
       }}
     />
+      <DeleteCardModal
+        modalVisible={isShownDeleteModal}
+        setModalVisible={setIsShownDeleteModal}
+        cardId={cardId}
+        packId={packId}
+      />
+    </>
   );
 };
 

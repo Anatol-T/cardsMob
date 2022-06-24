@@ -122,6 +122,7 @@ export const fetchCardsTC = (packUserId: string) =>
         }
         cardsApi.getCards(data)
             .then((res) => {
+
                 dispatch(setCardsAC(res.data));
             })
             .catch(e => {
