@@ -4,6 +4,7 @@ import {CardType} from "../../dal/cardsApi";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../bll/store";
 import {DeleteCardModal} from "./DeleteCardModal";
+import {UpdateCardModal} from "./UpdateCardModal";
 
 export type PropsType = {
   packId: string
@@ -14,7 +15,18 @@ export const CardsTable = ({packId}:PropsType) => {
   const cards = useSelector<AppRootStateType, Array<CardType>>(state => state.cards.cards);
 
   const [isShownDeleteModal, setIsShownDeleteModal] = useState<boolean>(false)
+  const [isShownUpdateModal, setIsShownUpdateModal] = useState<boolean>(false)
   const [cardId, setCardId] = useState<string>('')
+
+  const [updatedQuestion, setUpdatedQuestion] = useState<string>('');
+  const [updatedAnswer, setUpdatedAnswer] = useState<string>('');
+
+  const updateHandler = (id: string, question: string, answer: string) => {
+    setUpdatedQuestion(question)
+    setUpdatedAnswer(answer)
+    setCardId(id)
+    setIsShownUpdateModal(true)
+  }
 
   const deleteHandler = (id: string) => {
     setCardId(id)
@@ -44,7 +56,10 @@ export const CardsTable = ({packId}:PropsType) => {
             </View>
             {item.user_id === userId
               ? <View style={styles.buttonBlock}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => updateHandler(item._id, item.question, item.answer)}
+                >
                   <Text>Edit</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => deleteHandler(item._id)}>
@@ -64,6 +79,13 @@ export const CardsTable = ({packId}:PropsType) => {
         cardId={cardId}
         packId={packId}
       />
+      <UpdateCardModal
+        modalVisible={isShownUpdateModal}
+        setModalVisible={setIsShownUpdateModal}
+        cardId={cardId}
+        packId={packId}
+        question={updatedQuestion}
+        answer={updatedAnswer}/>
     </>
   );
 };
