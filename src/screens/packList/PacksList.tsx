@@ -8,6 +8,8 @@ import {setErrorAC} from "../../bll/appReducer";
 import {PackTable} from "./PackTable";
 import {Pagination} from "../../components/Pagination";
 import {FilterModal} from "./FilterModal";
+import {AddNewCardModal} from "../cards/AddNewCardModal";
+import {AddNewPackModal} from "./AddNewPackModal";
 
 
 const {height} = Dimensions.get('screen')
@@ -27,8 +29,7 @@ export const PacksList = () => {
   const cardPacksTotalCount = useSelector<AppRootStateType, number>(state => state.cardsPack.cardPacksTotalCount)
   const packName = useSelector<AppRootStateType, string>(state => state.cardsPack.packName)
 
-  const [newPackName, setNewPackName] = useState<string>('');
-  const [privateValue, setPrivateValue] = useState<boolean>(false);
+  const [isModalAdd, setIsModalAdd] = useState<boolean>(false)
 
   const [filterModalVisible, setFilterModalVisible]= useState(false)
 
@@ -48,12 +49,6 @@ export const PacksList = () => {
     if (isLoading) return
     if (newPage !== page) dispatch(changeCurrentPageAC(newPage))
   }
-  const addPack = () => {
-    dispatch(addPackTC(newPackName, privateValue))
-    setNewPackName('')
-    setPrivateValue(false)
-    //closeModal()
-  }
 
   if (!isLoggedIn) {
     return <></>
@@ -66,7 +61,7 @@ export const PacksList = () => {
           <TouchableOpacity style={styles.filterSection} onPress={()=> setFilterModalVisible(true)}>
             <Text>Filter</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.filterSection}>
+          <TouchableOpacity style={styles.filterSection} onPress={()=>setIsModalAdd(true)}>
             <Text>Add pack</Text>
           </TouchableOpacity>
         </View>
@@ -83,6 +78,7 @@ export const PacksList = () => {
         </View>
       </View>
       <FilterModal modalVisible={filterModalVisible} setModalVisible={setFilterModalVisible}/>
+      <AddNewPackModal modalVisible={isModalAdd} setModalVisible={setIsModalAdd}/>
     </Frame>
   );
 };

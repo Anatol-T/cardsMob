@@ -53,7 +53,7 @@ export const FilterModal = ({modalVisible, setModalVisible}: PropsType) => {
         <View style={styles.container}>
           <View style={styles.checkBoxContainer}>
             <Pressable
-              style={[styles.checkBox, my ? {backgroundColor: '#9890C7'} : {backgroundColor: '#E6D4DE'}]}
+              style={[styles.checkBox, my ? {backgroundColor: 'rgba(152,144,199,0.6)'} : {backgroundColor: '#9890C7'}]}
               onPress={() => {
                 setMy(false)
               }}
@@ -61,7 +61,7 @@ export const FilterModal = ({modalVisible, setModalVisible}: PropsType) => {
               <Text>All</Text>
             </Pressable>
             <Pressable
-              style={[styles.checkBox, !my ? {backgroundColor: '#9890C7'} : {backgroundColor: '#E6D4DE'}]}
+              style={[styles.checkBox, !my ? {backgroundColor: 'rgba(152,144,199,0.6)'} : {backgroundColor: '#9890C7'}]}
               onPress={() => {
                 setMy(true)
               }}
