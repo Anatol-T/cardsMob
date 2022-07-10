@@ -1,21 +1,20 @@
 import React from 'react';
-import {useDispatch} from "react-redux";
-import {Modal, Pressable, StyleSheet, Text, View} from "react-native";
 import {ModalFrame} from "../../components/ModalFrame";
-import {deleteCardTC} from "../../bll/cardsReducer";
+import {Modal, Pressable, StyleSheet, Text, View} from "react-native";
+import {useDispatch} from "react-redux";
+import {deletePackTC} from "../../bll/cardsPackReducer";
 
 type PropsType = {
   modalVisible: boolean
   setModalVisible: (modalVisible: boolean) => void
-  cardId: string
   packId: string
 }
 
-export const DeleteCardModal = ({modalVisible, setModalVisible, cardId, packId}: PropsType) => {
+export const DeletePackModal = ({modalVisible, setModalVisible, packId}: PropsType) => {
   const dispatch = useDispatch<any>();
 
   const setHandler = () => {
-    dispatch(deleteCardTC(packId, cardId))
+    dispatch(deletePackTC(packId))
     cancelHandler()
   }
   const cancelHandler = () => {
@@ -32,7 +31,7 @@ export const DeleteCardModal = ({modalVisible, setModalVisible, cardId, packId}:
     >
       <ModalFrame>
         <View style={styles.container}>
-          <Text>Do you really want to remove Card?</Text>
+          <Text>Do you really want to remove Pack?</Text>
           <View style={styles.buttonContainer}>
             <Pressable
               onPress={setHandler}
@@ -73,4 +72,3 @@ const styles = StyleSheet.create({
     borderRadius: 8
   },
 });
-
