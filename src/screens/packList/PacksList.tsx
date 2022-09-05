@@ -3,13 +3,13 @@ import {ActivityIndicator, Dimensions, StyleSheet, Text, TouchableOpacity, View}
 import {Frame} from "../../components/Frame";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../bll/store";
-import {addPackTC, changeCurrentPageAC, fetchPacksListsTC} from "../../bll/cardsPackReducer";
+import { changeCurrentPageAC, fetchPacksListsTC} from "../../bll/cardsPackReducer";
 import {setErrorAC} from "../../bll/appReducer";
 import {PackTable} from "./PackTable";
 import {Pagination} from "../../components/Pagination";
 import {FilterModal} from "./FilterModal";
-import {AddNewCardModal} from "../cards/AddNewCardModal";
 import {AddNewPackModal} from "./AddNewPackModal";
+import {SortModal} from "./SortModal";
 
 
 const {height} = Dimensions.get('screen')
@@ -32,6 +32,7 @@ export const PacksList = () => {
   const [isModalAdd, setIsModalAdd] = useState<boolean>(false)
 
   const [filterModalVisible, setFilterModalVisible]= useState(false)
+  const [sortModalVisible, setSortModalVisible]= useState(false)
 
   useEffect(() => {
     if (!isLoading) {
@@ -61,6 +62,9 @@ export const PacksList = () => {
           <TouchableOpacity style={styles.filterSection} onPress={()=> setFilterModalVisible(true)}>
             <Text>Filter</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.filterSection} onPress={()=> setSortModalVisible(true)}>
+            <Text>Sort by</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.filterSection} onPress={()=>setIsModalAdd(true)}>
             <Text>Add pack</Text>
           </TouchableOpacity>
@@ -78,6 +82,7 @@ export const PacksList = () => {
         </View>
       </View>
       <FilterModal modalVisible={filterModalVisible} setModalVisible={setFilterModalVisible}/>
+      <SortModal modalVisible={sortModalVisible} setModalVisible={setSortModalVisible}/>
       <AddNewPackModal modalVisible={isModalAdd} setModalVisible={setIsModalAdd}/>
     </Frame>
   );
@@ -104,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   filterSection:{
-    width: '45%',
+    width: '30%',
     backgroundColor: '#9890C7',
     justifyContent: "center",
     alignItems: "center",
