@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Modal, Pressable, StyleSheet, Text, View} from "react-native";
 import {ModalFrame} from "../../components/ModalFrame";
 import {useDispatch, useSelector} from "react-redux";
 import {Radio} from "../../components/Radio";
 import {AppRootStateType} from "../../bll/store";
+import {sortCardsAC} from "../../bll/cardsReducer";
+import {sortPacksAC} from "../../bll/cardsPackReducer";
 
 const sortOptions = ["Updated ascending", "Updated descending", "Cards count ascending", "Cards count descending"];
 const sortOptionsCode = ["0updated", "1updated", "0cardsCount", "1cardsCount"]
-
 
 
 type PropsType = {
@@ -18,20 +19,26 @@ type PropsType = {
 export const SortModal = ({modalVisible, setModalVisible}: PropsType) => {
   const dispatch = useDispatch<any>();
 
-  const [sortBy, setSortBy]= useState<string>("")
-
   const sortPacks = useSelector<AppRootStateType, string>(state => state.cardsPack.sortPacks)
 
-  const arrayIndex = sortOptionsCode.findIndex(value => value === sortPacks)
+  let arrayIndex = sortOptionsCode.findIndex(value => value === sortPacks)
+
+  const [sortBy, setSortBy] = useState<string>(sortOptions[arrayIndex])
+
+  useEffect(() => {
+    arrayIndex = sortOptionsCode.findIndex(value => value === sortPacks)
+    setSortBy(sortOptions[arrayIndex])
+    console.log(sortPacks)
+  }, [sortPacks])
 
   const setHandler = () => {
-    //dispatch(addPackTC(newPackName, privateValue))
-    //setNewPackName('')
-    cancelHandler()
+    const arrIndex = sortOptions.findIndex(value => value === sortBy)
+    setModalVisible(!modalVisible)
+    dispatch(sortPacksAC(sortOptionsCode[arrIndex]))
   }
   const cancelHandler = () => {
     setModalVisible(!modalVisible)
-    setSortBy("")
+    setSortBy(sortOptions[arrayIndex])
   }
 
   return (
@@ -45,7 +52,7 @@ export const SortModal = ({modalVisible, setModalVisible}: PropsType) => {
     >
       <ModalFrame>
         <View style={styles.container}>
-          <Text>Sorted by {sortOptions[arrayIndex]}</Text>
+          <Text style={styles.title}>Sorted by {sortOptions[arrayIndex]}</Text>
           <Radio options={sortOptions} value={sortBy} onChangeOption={setSortBy}/>
 
           <View style={styles.buttonContainer}>
@@ -53,7 +60,7 @@ export const SortModal = ({modalVisible, setModalVisible}: PropsType) => {
               onPress={setHandler}
               style={styles.button}
             >
-              <Text>Apply</Text>
+              <Text>Set</Text>
             </Pressable>
             <Pressable
               style={styles.button}
@@ -72,6 +79,11 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center"
   },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginVertical: 10
+  },
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -86,20 +98,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 8
-  },
-  input: {
-    borderWidth: 2,
-    borderColor: '#9890C7',
-    borderRadius: 5,
-    marginVertical: 15,
-    width: 200
-  },
-  checkBoxContainer: {
-    height: 40,
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 10,
-    width: 100
   },
 });
