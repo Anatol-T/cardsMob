@@ -4,7 +4,6 @@ import {ModalFrame} from "../../components/ModalFrame";
 import {useDispatch, useSelector} from "react-redux";
 import {Radio} from "../../components/Radio";
 import {AppRootStateType} from "../../bll/store";
-import {sortCardsAC} from "../../bll/cardsReducer";
 import {sortPacksAC} from "../../bll/cardsPackReducer";
 
 const sortOptions = ["Updated ascending", "Updated descending", "Cards count ascending", "Cards count descending"];
@@ -28,7 +27,6 @@ export const SortModal = ({modalVisible, setModalVisible}: PropsType) => {
   useEffect(() => {
     arrayIndex = sortOptionsCode.findIndex(value => value === sortPacks)
     setSortBy(sortOptions[arrayIndex])
-    console.log(sortPacks)
   }, [sortPacks])
 
   const setHandler = () => {

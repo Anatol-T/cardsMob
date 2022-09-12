@@ -39,10 +39,6 @@ export const Main = () => {
     dispatch(initializeAppTC())
   }, [dispatch])
 
-  useEffect(()=>{
-    console.log(isInitialized)
-  })
-
   const display = loginStatus ? "flex" : "none"
 
   if (!isInitialized) {
