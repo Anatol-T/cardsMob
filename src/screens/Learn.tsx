@@ -51,21 +51,16 @@ export const Learn = ({route}: LearnProps) => {
 
   useEffect(() => {
     if (cards.length > 0) setCard(getCard(cards));
-    console.log(cards)
   }, [cards])
 
   const onNext = () => {
     if (rating) {
       setIsChecked(false);
       setRating("")
-
       dispatch(CardsGradeTC(card._id, grades.findIndex(el => el === rating) + 1))
     }
   }
 
-  const cancelHandler = () => {
-    // navigate(PATH.PACKS, {replace: true})
-  }
   return (
     <Frame>
       {loading
@@ -76,7 +71,6 @@ export const Learn = ({route}: LearnProps) => {
             <View style={styles.textBlock}>
               <Text><Text style={styles.boldText}>Question: </Text>{card.question}</Text>
             </View>
-
             {isChecked && (
               <>
                 <View >
@@ -90,15 +84,10 @@ export const Learn = ({route}: LearnProps) => {
                   />
                   </View>
                 </View>
-
-
               </>
             )}
           </View>
           <View style={styles.buttonBlock}>
-            {/*<Pressable onPress={cancelHandler}>*/}
-            {/*  <Text>Cancel</Text>*/}
-            {/*</Pressable>*/}
             {
               isChecked
                 ? <Pressable onPress={onNext} disabled={!rating} style={styles.button}>
