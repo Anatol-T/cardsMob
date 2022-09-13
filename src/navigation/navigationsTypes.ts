@@ -3,18 +3,23 @@ import {NativeStackScreenProps} from "react-native-screens/native-stack";
 
 export type RootTabParamList = {
   Profile: undefined
-  Packs: NavigatorScreenParams<RootStackParamList>
-  Login: undefined
+  Packs: NavigatorScreenParams<RootStackParamListMain>
+  Login: NavigatorScreenParams<RootStackParamListLogin>
 };
 
-export type RootStackParamList = {
+export type RootStackParamListMain = {
   PacksMain: undefined
   Learn: {packId: string}
   Cards: {packId: string}
 }
 
-export type LearnProps = NativeStackScreenProps<RootStackParamList, 'Learn'>
-export type CardsProps = NativeStackScreenProps<RootStackParamList, 'Cards'>
+export type RootStackParamListLogin = {
+  LoginMain: undefined
+  Registration: undefined
+}
+
+export type LearnProps = NativeStackScreenProps<RootStackParamListMain, 'Learn'>
+export type CardsProps = NativeStackScreenProps<RootStackParamListMain, 'Cards'>
 
 export type UseNavigationType = NavigationProp<RootTabParamList >
 

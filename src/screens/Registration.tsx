@@ -1,14 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {Frame} from "../components/Frame";
-import {Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../bll/store";
 import {registerTC, setRegister} from "../bll/registerReducer";
 import {setErrorAC} from "../bll/appReducer";
+import {useAppNavigation} from "../navigation/navigationsTypes";
 
 const {width} = Dimensions.get('screen')
 
 export const Registration = () => {
+  const navigation = useAppNavigation()
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -25,8 +28,14 @@ export const Registration = () => {
     }
   }, [])
 
+  useEffect(()=>{
+    if (isRegistered) navigation.goBack()
+  }, [isRegistered])
+
   const onClickHandler = () => {
-    if (password !== confirmPassword) {
+    if (password.length < 8) {
+      dispatch(setErrorAC('Password too short'))
+    } else if (password !== confirmPassword) {
       dispatch(setErrorAC('Password and confirmation password do not match'))
     } else {
       dispatch(registerTC(email, password))
@@ -35,7 +44,8 @@ export const Registration = () => {
 
   return (
     <Frame>
-      <Text>Sign up</Text>
+      <Text style={styles.titleMain}>Sign up</Text>
+      {loading && <ActivityIndicator/>}
       {error ? <Text>{error}</Text> : <></>}
       <View style={styles.inputBox}>
         <Text>
@@ -72,6 +82,10 @@ export const Registration = () => {
 };
 
 const styles = StyleSheet.create({
+  titleMain: {
+    fontSize: 22,
+    fontWeight: "bold",
+  },
   inputBox: {
     height: 40,
     alignItems: 'flex-start',

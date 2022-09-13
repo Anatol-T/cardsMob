@@ -6,10 +6,13 @@ import {AppRootStateType} from "../bll/store";
 import {loginTC, logoutTC} from "../bll/loginReducer";
 import {setErrorAC} from "../bll/appReducer";
 import Checkbox from 'expo-checkbox';
+import {useAppNavigation} from "../navigation/navigationsTypes";
 
 const {width} = Dimensions.get('screen')
 
 export const Login = () => {
+  const navigation = useAppNavigation()
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -28,6 +31,10 @@ export const Login = () => {
     dispatch(logoutTC());
   };
 
+  const registerHandler = () => {
+    navigation.navigate('Login', {screen: 'Registration'})
+  }
+
   useEffect(() => {
     dispatch(setErrorAC(''))
   }, [])
@@ -45,7 +52,7 @@ export const Login = () => {
     <>
       {loading && <ActivityIndicator/>}
       <Frame>
-        <Text>Sign In</Text>
+        <Text style={styles.titleMain}>Sign In</Text>
         {error ? <Text>{error}</Text> : <></>}
         <View style={styles.inputBox}>
           <Text>
@@ -65,7 +72,7 @@ export const Login = () => {
                      onChangeText={setPassword}
           />
         </View>
-        <View style={{...styles.inputBox, width: 150} }>
+        <View style={{...styles.inputBox, width: 150}}>
           <Checkbox
             style={{width: 25, height: 25}}
             value={rememberMe}
@@ -77,12 +84,24 @@ export const Login = () => {
         <TouchableOpacity style={styles.button} onPress={loginHandler}>
           <Text>Login</Text>
         </TouchableOpacity>
+        <Text style={styles.title}>Don’t have an account?</Text>
+        <TouchableOpacity style={styles.button} onPress={registerHandler}>
+          <Text>Sign Up</Text>
+        </TouchableOpacity>
       </Frame>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  titleMain: {
+    fontSize: 22,
+    fontWeight: "bold",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
   inputBox: {
     height: 40,
     alignItems: 'flex-start',

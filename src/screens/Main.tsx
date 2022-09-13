@@ -6,7 +6,7 @@ import {Profile} from "./Profile";
 import {Login} from "./Login";
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {RootStackParamList, RootTabParamList} from "../navigation/navigationsTypes";
+import {RootStackParamListLogin, RootStackParamListMain, RootTabParamList} from "../navigation/navigationsTypes";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../bll/store";
@@ -14,20 +14,29 @@ import {initializeAppTC} from "../bll/appReducer";
 import {ActivityIndicator} from "react-native";
 import {Learn} from "./Learn";
 import {Cards} from "./cards/Cards";
+import {Registration} from "./Registration";
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const StackMain = createNativeStackNavigator<RootStackParamListMain>();
+const StackLogin = createNativeStackNavigator<RootStackParamListLogin>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
-const RootStackNavigation = () => {
+const RootStackNavigationMain = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name={'PacksMain'} component={PacksList} options={{headerShown: false}}/>
-      <Stack.Screen name={"Cards"} component={Cards}/>
-      <Stack.Screen name={"Learn"} component={Learn}/>
-    </Stack.Navigator>
+    <StackMain.Navigator>
+      <StackMain.Screen name={'PacksMain'} component={PacksList} options={{headerShown: false}}/>
+      <StackMain.Screen name={"Cards"} component={Cards}/>
+      <StackMain.Screen name={"Learn"} component={Learn}/>
+    </StackMain.Navigator>
   )
 }
-
+const RootStackNavigationLogin = () => {
+  return (
+    <StackLogin.Navigator>
+      <StackLogin.Screen name={'LoginMain'} component={Login} options={{headerShown: false}}/>
+      <StackLogin.Screen name={"Registration"} component={Registration}/>
+    </StackLogin.Navigator>
+  )
+}
 
 export const Main = () => {
   const dispatch = useDispatch<any>();
@@ -58,9 +67,9 @@ export const Main = () => {
           tabBarIcon: ({focused}) => <FontAwesome name={iconName as any} size={24} color={focused ? 'red' : 'black'}/>
         }
       }}>
-        <Tab.Screen name="Packs"  component={RootStackNavigation}/>
+        <Tab.Screen name="Packs"  component={RootStackNavigationMain}/>
         <Tab.Screen name="Profile" component={Profile}/>
-        <Tab.Screen name="Login" component={Login} options={{tabBarStyle: {display: display}}}/>
+        <Tab.Screen name="Login" component={RootStackNavigationLogin} options={{tabBarStyle: {display: display}}}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
